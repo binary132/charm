@@ -30,6 +30,9 @@ const (
 	// will be prefixed by the relation name, just like the other Relation* Kind
 	// values.
 	RelationBroken Kind = "relation-broken"
+
+	// This is the Hook Kind for generic RunCommands contexts.
+	RunCommands Kind = "run-commands"
 )
 
 var unitHooks = []Kind{
@@ -39,6 +42,7 @@ var unitHooks = []Kind{
 	ActionRequested,
 	UpgradeCharm,
 	Stop,
+	RunCommands,
 }
 
 // UnitHooks returns all known unit hook kinds.
