@@ -91,9 +91,9 @@ func (s *StoreSuite) TestLatest(c *gc.C) {
 	revInfo, err := s.store.Latest(urls...)
 	c.Assert(err, gc.IsNil)
 	c.Assert(revInfo, gc.DeepEquals, []charm.CharmRevision{
-		{23, "c89d9b522cebbd68061048ed2910180e1b63b6afaa373d1fe1c47ff9970be126", nil},
-		{23, "c89d9b522cebbd68061048ed2910180e1b63b6afaa373d1fe1c47ff9970be126", nil},
-		{23, "c89d9b522cebbd68061048ed2910180e1b63b6afaa373d1fe1c47ff9970be126", nil},
+		{23, "d56e20a88fa92d13f10eddacb06f9a81f06effbedc8e4f5ecb207a5df7a495bd", nil},
+		{23, "d56e20a88fa92d13f10eddacb06f9a81f06effbedc8e4f5ecb207a5df7a495bd", nil},
+		{23, "d56e20a88fa92d13f10eddacb06f9a81f06effbedc8e4f5ecb207a5df7a495bd", nil},
 	})
 }
 

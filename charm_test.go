@@ -86,17 +86,42 @@ func checkDummy(c *gc.C, f charm.Charm, path string) {
 	c.Assert(f.Revision(), gc.Equals, 1)
 	c.Assert(f.Meta().Name, gc.Equals, "dummy")
 	c.Assert(f.Config().Options["title"].Default, gc.Equals, "My Title")
-	c.Assert(f.Actions(), gc.DeepEquals,
-		&charm.Actions{
-			map[string]charm.ActionSpec{
-				"snapshot": charm.ActionSpec{
-					Description: "Take a snapshot of the database.",
-					Params: map[string]interface{}{
-						"outfile": map[string]interface{}{
-							"description": "The file to write out to.",
-							"type":        "string",
-							"default":     "foo.bz2",
-						}}}}})
+	c.Assert(f.Actions(), gc.DeepEquals, &charm.Actions{
+		ActionSpecs: map[string]charm.ActionSpec{
+			"snapshot": charm.ActionSpec{
+				Description: "Take a snapshot of the database.",
+				Params: map[string]interface{}{
+					"compression-type": map[string]interface{}{
+						"title":       "Compression type",
+						"description": "The kind and quality of snapshot compression",
+						"type":        "object",
+						"properties": map[string]interface{}{
+							"kind": map[string]interface{}{
+								"type":        "string",
+								"description": "The compression tool to use.",
+							},
+							"quality": map[string]interface{}{
+								"maximum":     9,
+								"description": "Compression quality from 0 to 9.",
+								"minimum":     0,
+							},
+						},
+						"required": []interface{}{"kind"},
+					},
+					"outfile": map[string]interface{}{
+						"description": "The file to write out to.",
+						"type":        "string",
+						"default":     "foo.bz2",
+					},
+				},
+			},
+			"kill": charm.ActionSpec{
+				Description: "Kill the database.",
+				Params:      map[string]interface{}{},
+			},
+		},
+	})
+
 	switch f := f.(type) {
 	case *charm.CharmArchive:
 		c.Assert(f.Path, gc.Equals, path)
