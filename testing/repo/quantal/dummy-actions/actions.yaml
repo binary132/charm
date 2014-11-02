@@ -1,0 +1,24 @@
+actions: 
+   snapshot:
+      description: Take a snapshot of the database.
+      params:
+         outfile:
+            description: The file to write out to.
+            type: string
+            default: foo.bz2
+         compression-type:
+            title: Compression type
+            description: The kind and quality of snapshot compression
+            type: object
+            properties:
+               kind:
+                  description: The compression tool to use.
+                  type: string
+               quality:
+                  description: Compression quality from 0 to 9.
+                  minimum: 0
+                  maximum: 9
+            required: [kind]
+   kill:
+      description: Kill the database.
+
