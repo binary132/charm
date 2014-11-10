@@ -152,6 +152,27 @@ func (s *ActionsSuite) TestValidateFail(c *gc.C) {
 		badActionJson: `
 { "outfile": "out-2014-06-12.bz2", "quality": "two" }`,
 		expectedError: "JSON validation failed: (root).quality : must be of type integer, given \"two\"",
+	}, {
+		description: "Extra unspecified parameters are a validation error.",
+		actionSpec: &ActionSpec{
+			Description: "Take a snapshot of the database.",
+			Params: map[string]interface{}{
+				"title":       "Snapshot params",
+				"description": "Take a snapshot of the database.",
+				"type":        "object",
+				"properties": map[string]interface{}{
+					"outfile": map[string]interface{}{
+						"description": "The file to write out to.",
+						"type":        "string"},
+					"quality": map[string]interface{}{
+						"description": "Compression quality",
+						"type":        "integer",
+						"minimum":     0,
+						"maximum":     9}},
+				"required": []interface{}{"outfile"}}},
+		badActionJson: `
+{ "outfile": "out-2013-06-12.bz2", "quality": 2, "porkchops": 3 }`,
+		expectedError: "JSON validation failed: (root).quality : must be of type integer, given \"two\"",
 	}}
 
 	for i, test := range validActionTests {
@@ -161,6 +182,7 @@ func (s *ActionsSuite) TestValidateFail(c *gc.C) {
 		err := json.Unmarshal(jsonBytes, &params)
 		c.Assert(err, gc.IsNil)
 		_, err = test.actionSpec.ValidateParams(params)
+		c.Assert(err, gc.NotNil)
 		c.Assert(err.Error(), gc.Equals, test.expectedError)
 	}
 }

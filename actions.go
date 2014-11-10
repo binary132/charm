@@ -41,7 +41,6 @@ func NewActions() *Actions {
 // Params for the specific ActionSpec.
 // Usage: ok, err := ch.Actions()["snapshot"].Validate(jsonParams)
 func (spec *ActionSpec) ValidateParams(params interface{}) (bool, error) {
-
 	specSchemaDoc, err := gojsonschema.NewJsonSchemaDocument(spec.Params)
 	if err != nil {
 		return false, err
